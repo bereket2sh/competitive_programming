@@ -6,6 +6,7 @@
 #         self.right = right
 class Solution:
     def largestValues(self, root: Optional[TreeNode]) -> List[int]:
+        # space ,time = O(m),O(n) where m is the # of leave node and n is the total node
         if not root:
             return None
         res = []
