@@ -1,4 +1,5 @@
 class Solution:
+    #space,time = O(1),O(n^2)
     def subArrayRanges(self, nums: List[int]) -> int:
         res = 0
         for i in range(len(nums)-1):
