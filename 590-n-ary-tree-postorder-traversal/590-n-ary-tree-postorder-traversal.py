@@ -8,17 +8,40 @@ class Node:
 
 class Solution:
     def postorder(self, root: 'Node') -> List[int]:
-        res = []
+        if not root:
+            return []
+        s1, s2, res = [root], [], []
         
-        def dfs(node):
-            nonlocal res
-            if not node:
-                return
-            
+        while s1:
+            node = s1.pop()
+            s2.append(node)
             for child in node.children:
-                dfs(child)
+                s1.append(child)
                 
+        while s2:
+            node = s2.pop()
             res.append(node.val)
-            
-        dfs(root)
+        
         return res
+        
+        
+        
+        
+        
+        
+        
+        
+#         res = []
+        
+#         def dfs(node):
+#             nonlocal res
+#             if not node:
+#                 return
+            
+#             for child in node.children:
+#                 dfs(child)
+                
+#             res.append(node.val)
+            
+#         dfs(root)
+#         return res
