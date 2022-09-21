@@ -1,24 +1,24 @@
 class Solution:
     def countDistinct(self, nums: List[int], k: int, p: int) -> int:
-        res = 0
-        memo = set()
+        memo = []
         
         for i in range(len(nums)):
-            temp = []
-            s = ""
+            var = []
+            count = 0
             for j in range(i, len(nums)):
-                temp.append(nums[j])
-                count = 0
-                s += "," + str(nums[j])
-                
-                for num in temp:
-                    if num % p == 0:
-                        count += 1
-                       
+                if nums[j] % p == 0:
+                    count += 1
+                if count <= k:
+                    memo.append([i,j])
+                else:
+                    break
                 
                 
-                if count <= k and s not in memo:
-                    res += 1
-                memo.add(s)
-           
-        return res
+        res = set()
+        for val in memo:
+            temp = tuple(nums[val[0]: val[-1]+1])
+            
+            res.add(temp)
+            
+            
+        return len(res)
