@@ -1,36 +1,26 @@
 class Solution:
     def longestStrChain(self, words: List[str]) -> int:
+        s = set(words)
         
-        chain = defaultdict(list)
+        memo = {}
         
-        for i in range(len(words)):
-            for j in range(len(words)):
-                if len(words[j]) == len(words[i]) + 1 and self.isChain(words[i], words[j]):
-                    chain[words[i]].append(words[j])
+        def recursive(word):
+            if word not in s:
+                return 0
+            if word in memo:
+                return memo[word]
+            
+            else:
+                mx = 0
+                
+                for i in range(len(word)):
+                    mx = max(mx, recursive(word[:i] + word[i + 1: ]) + 1)
                     
-        self.ans = [1]
-        
-        @cache
-        def dfs(node, count):
-            if not chain[node]:
-                self.ans.append(count)
-                return 
+                memo[word] = mx
+                
+                return mx
             
-            for child in chain[node]:
-                dfs(child, count + 1)
-              
-        for key in list(chain):
-            dfs(key, 1)
+        for w in words:
+            recursive(w)
             
-        return max(self.ans)
-            
-                    
-                    
-    def isChain(self, word1, word2):
-        for i in range(len(word2)):
-            if word1 == word2[:i] + word2[i + 1: ]:
-                return True
-            
-        return False
-
-      
+        return max(memo.values())
