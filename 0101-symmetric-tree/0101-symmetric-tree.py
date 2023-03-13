@@ -7,30 +7,12 @@
 class Solution:
     def isSymmetric(self, root: Optional[TreeNode]) -> bool:
         
-        que = deque([root])
+        def dfs(l, r):
+            if not l and not r:
+                return True
+            if (l and r) and l.val == r.val:
+                return dfs(l.left, r.right) and dfs(l.right, r.left)
+            
+            return False
         
-        while que:
-            i = 0
-            j = len(que) - 1
-            while i < j :
-                if que[i] == None and que[j] == None:
-                    i += 1
-                    j -= 1
-                    continue
-                elif que[i] == None or que[j] == None: return False
-                elif que[i].val != que[j].val:
-                    return False
-                i += 1
-                j -= 1
-            # print(que)
-            # print()
-            newLevel = deque()
-            while que:
-                node = que.popleft()
-                if node:
-                    newLevel.append(node.left if node.left else None)
-                    newLevel.append(node.right if node.right else None)  
-                    
-            que = newLevel
-        
-        return True
+        return dfs(root, root)
