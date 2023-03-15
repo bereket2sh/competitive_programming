@@ -6,44 +6,19 @@
 #         self.right = right
 class Solution:
     def isCompleteTree(self, root: Optional[TreeNode]) -> bool:
-        self.heigh = 0
-        def dfs(node, depth):
-            if not node.left and not node.right:
-                self.heigh = max(self.heigh, depth)
-                
-            if node.left: 
-                dfs(node.left, depth + 1)
-            if node.right:
-                dfs(node.right, depth + 1)
-                
-        dfs(root, 1)
-   
-        
         que = deque([root])
+        null = False
         
-        for i in range(self.heigh - 1):
-            for j in range(len(que)):
-                if que[j] == None:
-                    return False
+        while que:
+            node = que.popleft()
             
-            new_level = deque()
-            while que:
-                node = que.popleft()
-                if node:
-                    new_level.append(node.left if node.left else None)
-                    new_level.append(node.right if node.right else None)
-                    
-            que = new_level
-            
-      
-        nonePos = []
-        numPos = []
-        for y in range(len(que)):
-            if not que[y]:
-                nonePos.append(y)
+            if not node:
+                null = True
             else:
-                numPos.append(y)
+                if null:
+                    return False
                 
-        if not nonePos:
-            return True
-        return min(nonePos) > max(numPos)
+                que.append(node.left)
+                que.append(node.right)
+            
+        return True
