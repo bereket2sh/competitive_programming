@@ -28,12 +28,11 @@ class Solution:
         visited = set([1])
         
         while queue:
-            print(queue)
+         
             new_queue = deque()
             
             while queue:
-                # print("true")
-                # print(queue)
+              
                 cur_val, ladder = queue.popleft()
 
                 if cur_val == n**2:
@@ -42,24 +41,17 @@ class Solution:
 
                 for i in range(cur_val + 1, min(n**2 + 1, cur_val +  7)):
                     
-                    # print(i, coordinates[i])
+                  
                     row, col = coordinates[i][0], coordinates[i][1]
 
                     if board[row][col] != -1 and board[row][col] not in visited :
-                        if i == 15:
-                            print(i, ladder)
-                        # if ladder:
+                        
                         visited.add(board[row][col])
                         new_queue.append((board[row][col], 0))
 
 
-                        # elif i not in visited:
-                            
-                            # visited.add(i)
-                            # new_queue.append((i, 1))
-
                     elif board[row][col] == -1 and i not in visited:
-                        # print(i)
+                     
                         visited.add(i)
                         new_queue.append((i, 1))
                         
