@@ -22,7 +22,6 @@ class Solution:
             
             for child in graph[node]:
                 if child in visited:
-                    # print("here")
                     self.ans = max(self.ans, val - arr[child] + 1)
                     return 
                 dfs(child, val + 1)
