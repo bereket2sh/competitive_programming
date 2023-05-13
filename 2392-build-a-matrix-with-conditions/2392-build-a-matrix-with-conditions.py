@@ -1,32 +1,19 @@
 class Solution:
     def buildMatrix(self, k: int, rowConditions: List[List[int]], colConditions: List[List[int]]) -> List[List[int]]:
-        graph_row = defaultdict(list)
-        indegree_row = [0] * k
-        graph_col = defaultdict(list)
-        indegree_col = [0] * k
-        
-        position = defaultdict(list)
         ans = []
         for i in range(k):
-            temp = []
-            for i in range(k):
-                temp.append(0)
+            temp = [0] * k
             ans.append(temp)
         
-        for a, b in rowConditions:
-            graph_row[a].append(b)
-            indegree_row[b - 1] += 1
-            
-        for a, b in colConditions:
-            graph_col[a].append(b)
-            indegree_col[b - 1] += 1
-            
-            
-        def topological(g, ind):
+        def topological(condition):
+            graph = defaultdict(list)
+            indegree = [0] * k
+            for a, b in condition:
+                graph[a].append(b)
+                indegree[b - 1] += 1
             
             que = deque()
-            
-            for i, val in enumerate(ind):
+            for i, val in enumerate(indegree):
                 if val == 0:
                     que.append(i + 1)
                     
@@ -36,22 +23,23 @@ class Solution:
                 temp = que.popleft()
                 order.append(temp)
                 
-                for child in g[temp]:
-                    ind[child - 1] -= 1
-                    if ind[child - 1] == 0:
+                for child in graph[temp]:
+                    indegree[child - 1] -= 1
+                    if indegree[child - 1] == 0:
                         que.append(child)
                         
             return order
                         
-        row = topological(graph_row, indegree_row)
-        col = topological(graph_col, indegree_col)
+        row_order = topological(rowConditions)
+        col_order = topological(colConditions)
         
-        if len(row) < k or len(col) < k:
+        #cycle detection
+        if len(row_order) < k or len(col_order) < k:
             return []
         
-        for r, x in enumerate(row):
-            c = col.index(x)
-            ans[r][c] = x
+        for row, val in enumerate(row_order):
+            col = col_order.index(val)
+            ans[row][col] = val
             
         return ans
             
