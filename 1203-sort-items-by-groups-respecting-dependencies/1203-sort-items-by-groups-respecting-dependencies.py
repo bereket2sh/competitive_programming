@@ -1,69 +1,55 @@
 class Solution:
     def sortItems(self, n: int, m: int, group: List[int], beforeItems: List[List[int]]) -> List[int]:
-        graph = defaultdict(lambda: defaultdict(list))
-        group_graph = defaultdict(list)
-        
-        count = m
-        for i in range(len(group)):
-            if group[i] == -1:
-                group[i] = count
-                count += 1
-                
-        for val, gr in enumerate(group):
-            if val not in graph[gr]:
-                graph[gr][val] = [[], [0]]
-            if gr not in group_graph:
-                group_graph[gr] = [[], [0]]
+        group_GRAPH = defaultdict(list)
+        group_INDEGREE = defaultdict(int)
+        child_GRAPH = defaultdict(lambda: defaultdict(list))
+        child_INDEGREE = defaultdict(int)
 
-            for bef in beforeItems[val]:
-                if group[bef] == gr:
-                    if bef in graph[gr]:
-                        graph[gr][bef][0].append(val)
-                    else:
-                        graph[gr][bef] = [[val], [0]]
+        for item, squad in enumerate(group):
+            squad = squad if squad != -1 else 30001 + item
+            group[item] = squad
 
-                    graph[gr][val][1][0] += 1
+            group_GRAPH[squad].extend([])
+            child_GRAPH[squad][item].extend([])
 
+            for prev in beforeItems[item]:
+                if group[prev] != squad:
+                    group[prev] = group[prev] if group[prev] != -1 else 30001 + prev
+                    group_GRAPH[group[prev]].append(squad)
+                    group_INDEGREE[squad] += 1
                 else:
-                    if group[bef] not in group_graph:
-                        group_graph[group[bef]] = [[gr], [0]]
+                    child_GRAPH[squad][prev].append(item)
+                    child_INDEGREE[item] += 1
 
-                    else:
-                        group_graph[group[bef]][0].append(gr)
+        def top_sort(graph, indegree):
+            queue, order = deque(), []
 
-                    group_graph[gr][1][0] += 1
-                    
-        def topological(g):
-            order = []
-            que = deque()
-            for key in g.keys():
-                if g[key][1][0] == 0:
-                    que.append(key)
-                    
-            while que:
-                temp = que.popleft()
-                order.append(temp)
+            for node in graph.keys():
+                if not indegree[node]:
+                    queue.append(node)
+
+            while queue:
+                node = queue.popleft()
+                order.append(node)
+
+                for adj in graph[node]:
+                    indegree[adj] -= 1
+
+                    if not indegree[adj]:
+                        queue.append(adj)
+
+            return [] if len(order) != len(graph) else order
+
+        group_acyclic = top_sort(group_GRAPH, group_INDEGREE)
+        res = []
+
+        if group_acyclic:
+            for squad in group_acyclic:
+                ans = top_sort(child_GRAPH[squad], child_INDEGREE)
                 
-                for child in g[temp][0]:
-                    g[child][1][0] -= 1
-                    if g[child][1][0] == 0:
-                        que.append(child)
-                        
-            return order         
-            
-        ans = []
-        var = topological(group_graph)
-        
-        for i in range(len(var)):
-            temp = topological(graph[var[i]])
-            for t in temp:
-                ans.append(t)
+                if not ans:
+                    return
                 
-        return ans if len(ans) == len(group) else []
-            
-            
-                        
-            
-            
-                        
-            
+                res.extend(ans)
+
+        return res
