@@ -15,27 +15,12 @@ class Solution:
             while n:
                 temp = temp.next
                 n -= 1
+            return temp
             
             
-        first_node, last_node = None, None
-        
-        var = k - 1
-        temp  = head
-        while var:
-            temp = temp.next
-            var -=1
-            
-        first_node = temp
-        temp = head
-        
-        var = size - k 
-        
-        while var:
-            temp = temp.next
-            var -= 1
-            
-        last_node = temp
+        first_node, last_node = find(k - 1), find(size - k)        
         first_node.val, last_node.val = last_node.val, first_node.val
+        
         return head
             
         
