@@ -3,7 +3,8 @@ class Solution:
         state = 0
        
         sign = 1
-        ans = []
+        ans = 0
+        inc = 0
         for i, n in enumerate(s):
             if (n == "+" and i != 0 and state != 0) or (n == "-" and i != 0 and state != 0):
                 break
@@ -16,15 +17,13 @@ class Solution:
             
             elif n.isdigit():
                 state += 1
-                ans.append(n)
+                ans = ans * 10 + int(n)
             elif n == " " and state == 0:
                 continue
             else:
                 break
         
-        ans = "".join(ans)
-        if not ans: return 0
-        
+     
         ans = sign * int(ans)
         if ans > (2**31 - 1):
             return 2 ** 31 - 1
