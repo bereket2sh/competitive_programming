@@ -1,7 +1,7 @@
 class Solution:
     def myAtoi(self, s: str) -> int:
         s = s.strip()
-        
+       
         sign = 1
         ans = ""
         for i, n in enumerate(s):
