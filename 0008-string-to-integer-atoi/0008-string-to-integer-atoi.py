@@ -3,7 +3,7 @@ class Solution:
         state = 0
        
         sign = 1
-        ans = ""
+        ans = []
         for i, n in enumerate(s):
             if (n == "+" and i != 0 and state != 0) or (n == "-" and i != 0 and state != 0):
                 break
@@ -16,12 +16,13 @@ class Solution:
             
             elif n.isdigit():
                 state += 1
-                ans += n
+                ans.append(n)
             elif n == " " and state == 0:
                 continue
             else:
                 break
         
+        ans = "".join(ans)
         if not ans: return 0
         
         ans = sign * int(ans)
