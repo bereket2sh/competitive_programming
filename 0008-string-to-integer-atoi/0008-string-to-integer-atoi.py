@@ -1,34 +1,35 @@
 class Solution:
     def myAtoi(self, s: str) -> int:
-        s = s.strip()
-        if len(s) == 0:
-            return 0
-        
-        if s[0] == '-':
-            sign = -1
-            s = s[1:]
-        elif s[0] == '+':
-            sign = 1
-            s = s[1:]
-        else:
-            sign = 1
-        
-        # digits = [str(i) for i in range(0, 10)]
-        result = 0
-        for c in s:
-            if not c.isdigit():
+        state = 0
+       
+        sign = 1
+        ans = 0
+        inc = 0
+        for i, n in enumerate(s):
+            if (n == "+" and i != 0 and state != 0) or (n == "-" and i != 0 and state != 0):
                 break
+            elif n == "-":
+                sign *= -1
+                state += 1
+            elif n == "+":
+                state += 1
+                continue
+            
+            elif n.isdigit():
+                state += 1
+                ans = ans * 10 + int(n)
+            elif n == " " and state == 0:
+                continue
             else:
-                result = result*10 + int(c)
+                break
         
-        result = sign*result
-        UPPER_LIMIT = 2**31 - 1
-        LOWER_LIMIT = -2**31
-        if result < LOWER_LIMIT:
-            return LOWER_LIMIT
-        elif result > UPPER_LIMIT:
-            return UPPER_LIMIT
-        else:
-            return result
+     
+        ans = sign * int(ans)
+        if ans > (2**31 - 1):
+            return 2 ** 31 - 1
+        if ans < (-2 ** 31):
+            return -2 ** 31
+                
+        return ans
                 
             
