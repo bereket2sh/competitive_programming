@@ -1,11 +1,6 @@
 class Solution:
     def frequencySort(self, s: str) -> str:
-        s = Counter(s)
+        return  list(chain(*[[x] * y for x, y in sorted(Counter(s).items(), key = lambda x : -x[1])])) 
         
-        ans = []
-        s = sorted(s.items(), key = lambda x : -x[1])
-        for x, y in s:
-            ans.extend([x ] * y)
             
-        return ans
         
