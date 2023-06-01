@@ -1,48 +1,30 @@
 class Solution:
     def friendRequests(self, n: int, restrictions: List[List[int]], requests: List[List[int]]) -> List[bool]:
         parent = [i for i in range(n)]
-        answer = [False] * len(requests)
-        rank = [1 for _ in range(n)]
-        
-        def find1(node):
-            while node != parent[node]:
-                node = parent[node]
-                
-            return parent[node]
         
         def find(node):
-            if node != parent[node]:
-                parent[node] = find(parent[node])
-                
-            return parent[node]
+            while node != parent[node]:
+                node = parent[node]
+            return node
         
-        def union(a, b, i):
-            pa = find(a)
-            pb = find(b)
+        def union(a, b, m):
+            pa, pb = find(a), find(b)
+            if pa == pb:
+                return
+            parent[pb] = pa
             
-            if pa != pb:
-                parent[pb] = pa
-                flag = True
-                
-                for x, y in restrictions:
-                    px, py = find1(x), find1(y)
-                    if px == py:
-                        flag = False
-                        break
-                        
-                if flag:
-                    answer[i] = True
-                else:
-                    
-                    parent[pb] = pb 
-                
-                
-            else:
-                answer[i] = True
-                
+            for c, d in restrictions:
+                if find(c) == find(d):
+                    ans[m] = False
+                    parent[pb] = pb
+                    break
+            
+        
+            
+        ans = [True]*len(requests)
+
         for i in range(len(requests)):
-            union(requests[i][0], requests[i][1], i)
-        
-        return answer
+            a, b = requests[i][0], requests[i][1]
+            union(a, b, i)
             
-            
+        return ans
