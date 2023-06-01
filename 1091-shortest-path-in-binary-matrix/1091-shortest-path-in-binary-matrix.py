@@ -7,7 +7,7 @@ class Solution:
         n = len(grid)
         
         que = deque([(0, 0, 1)])
-        visited = set((0, 0))
+        grid[0][0] = 1
         directions = [[0,1], [1,0],[-1,0],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]]
         
         def valid(row, col):
@@ -16,7 +16,7 @@ class Solution:
         while que:
             row, col, step = que.popleft()
             
-           
+            
             if row == n - 1 and col == n - 1:
                 return step
             
@@ -24,8 +24,8 @@ class Solution:
                 new_row = row + dr
                 new_col = col + dc
                 
-                if valid(new_row, new_col) and (new_row, new_col) not in visited:
-                    visited.add((new_row, new_col))
-                    que.append((new_row, new_col, step + 1))
+                if valid(new_row, new_col):
                     
+                    que.append((new_row, new_col, step + 1))
+                    grid[new_row][new_col] = 1
         return -1
