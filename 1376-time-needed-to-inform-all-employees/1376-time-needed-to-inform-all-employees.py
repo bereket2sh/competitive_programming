@@ -11,8 +11,7 @@ class Solution:
         self.answer = 0
         
         def dfs(node, time):
-            if not graph[node]:
-                self.answer = max(self.answer, time)
+            self.answer = max(self.answer, time)
                 
             for child in graph[node]:
                 dfs(child, time + informTime[node])
