@@ -1,19 +1,20 @@
 class Solution:
     def canMakeArithmeticProgression(self, arr: List[int]) -> bool:
-        _max, _min = max(arr),  min(arr)
+        max_value, min_value = max(arr),  min(arr)
+        n = len(arr)
         
-        if _max - _min == 0:
+        if max_value - min_value == 0:
             return True
         
-        if (_max - _min) % (len(arr) - 1) != 0:
+        if (max_value - min_value) % (n - 1) != 0:
             return False
         
-        dif = (_max - _min) // (len(arr) - 1)
+        dif = (max_value - min_value) // (n - 1)
         
         for i, val in enumerate(arr):
-            ind = (val - _min) // dif
+            ind = (val - min_value) // dif
             
-            if (val - _min) % (dif) or ( i != ind and arr[i] == arr[ind] ):
+            if (val - min_value) % (dif) or ( i != ind and arr[i] == arr[ind] ):
                 return False
             
             arr[i], arr[ind] = arr[ind], arr[i]
