@@ -1,6 +1,5 @@
 class Solution:
     def canMakeArithmeticProgression(self, arr: List[int]) -> bool:
-        seen = set()
         _max, _min = max(arr),  min(arr)
         
         if _max - _min == 0:
@@ -11,14 +10,12 @@ class Solution:
         
         dif = (_max - _min) // (len(arr) - 1)
         
-        for val in arr:
-            if (val - _min) % (dif) or val in seen:
+        for i, val in enumerate(arr):
+            ind = (val - _min) // dif
+            
+            if (val - _min) % (dif) or ( i != ind and arr[i] == arr[ind] ):
                 return False
-            seen.add(val)
+            
+            arr[i], arr[ind] = arr[ind], arr[i]
             
         return True
-    
-#     3 5 1
-    
-#     5 - 1 = 4 // 2 = 2
-#     3 - 1 = 2 // 2
